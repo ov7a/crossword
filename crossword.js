@@ -78,21 +78,73 @@ function draw_crossword(net, letters){
 	}
 };
 
-function get_limits(net){ //TODO: optimize
+function out_of_bounds(net, y, x){
+	return x < 0 || y < 0 || net.length <= y || net[y].length <= x;
+};
+
+function get_limits(net){ 
 	var max_x = 0;
 	var max_y = 0;
 	var min_x = net[0].length - 1;
 	var min_y = net.length - 1;
-	for (var y = 0; y < net.length; y++){
-		for (var x = 0; x < net[0].length; x++){
+	
+	var x,y;
+	
+	for (y = 0; y < net.length; y++){
+		var found = false;
+		for (x = 0; x < net[0].length; x++){
 			if (net[y][x] != undefined){
-				if (x < min_x) min_x = x;
-				if (x > max_x) max_x = x;
-				if (y < min_y) min_y = y;
-				if (y > max_y) max_y = y;
+				min_x = x;
+				max_x = x;
+				min_y = y;
+				max_y = y;
+				found = true;
+				break;
 			}
 		}
+		if (found) break;
 	}
+
+	var dx = 1, dy = 0;
+	var gdx = 0, gdy = 1;
+	x = x - gdx;
+	y = y - gdy;
+	var start_x = x, start_y = y;
+	do {
+		var next_x = x + dx;
+		var next_y = y + dy;
+		var next_gx = next_x + gdx;
+		var next_gy = next_y + gdy;
+		var free_ahead = out_of_bounds(net, next_y, next_x) || net[next_y][next_x] == undefined;
+		var has_ground = !out_of_bounds(net, next_gy, next_gx) && net[next_gy][next_gx] != undefined;
+		if (free_ahead && has_ground){
+			x = next_x;
+			y = next_y;
+			if (next_gx < min_x) min_x = next_gx;
+			if (next_gx > max_x) max_x = next_gx;
+			if (next_gy < min_y) min_y = next_gy;
+			if (next_gy > max_y) max_y = next_gy;
+		} else if (!free_ahead){
+			var temp = dy;
+			gdx = dx;
+			gdy = dy;
+			dy = -dx;
+			dx = temp;
+			if (next_x < min_x) min_x = next_x;
+			if (next_x > max_x) max_x = next_x;
+			if (next_y < min_y) min_y = next_y;
+			if (next_y > max_y) max_y = next_y;
+		} else if (!has_ground){
+			x = next_gx;
+			y = next_gy;
+			var temp = dx;
+			dx = gdx;
+			dy = gdy;
+			gdy = gdx;
+			gdx = -temp;
+		}
+	} while (x != start_x || y != start_y);
+
 	return {
 		min_x: min_x,
 		max_x: max_x,
