@@ -14,11 +14,20 @@
 			vertical-align: middle;
 			border: 1px solid black; 
 			padding: 3px;
+			width: 2em;
 		}
 		
 		table.crossword td.filled {
 			vertical-align: middle;
 			border: 1px solid black; 
+			width: 2.5em;
+			height: 2em;
+		}
+		
+		table.crossword td.filled sup {
+			position: relative;
+			top: -0.5em;
+			left: -0.25em;
 		}
 		
 		table.crossword td.empty {
@@ -45,11 +54,6 @@
 		ol,ul {
 			padding: 0;
 			margin: 0;
-		}
-		
-		canvas {
-			width: 100%,
-			height: auto;
 		}
 	</style>
 	<style id="letters_style" type="text/css">
