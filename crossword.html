@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<head>
+	<title>Crossword generator</title>
+	<script type="text/javascript" src="crossword.js"></script>
+	<style type="text/css">
+		textarea {
+			font-family: inherit;
+			font-size: inherit;
+			padding: 0;
+		}
+		
+		table.letters td {
+			vertical-align: middle;
+			border: 1px solid black; 
+			padding: 3px;
+		}
+		
+		table.crossword td.filled {
+			vertical-align: middle;
+			border: 1px solid black; 
+		}
+		
+		table.crossword td.empty {
+			vertical-align: middle;
+			border: none; 
+			padding: 3px;
+		}
+		
+		table.align td {
+			vertical-align: middle;
+			border: none; 
+		}			
+							
+		#main {
+			text-align: center;
+		}
+		
+		table { 
+			margin-left: auto;
+			margin-right: auto;
+			border-collapse: collapse;
+		}
+		
+		ol,ul {
+			padding: 0;
+			margin: 0;
+		}
+		
+		canvas {
+			width: 100%,
+			height: auto;
+		}
+	</style>
+	<style id="letters_style" type="text/css">
+		.filled span {
+			visibility: hidden;
+		}
+	</style>
+	<meta charset="utf-8"/>
+</head>
+<body onload="onload();">
+	<div id="main">
+		<p>Words:</p>
+		<table class="align">
+			<tbody>
+				<tr>
+					<td><ol id="numbers"></ol></td>
+					<td><textarea id="wordlist" rows="1" oninput="words_input();"></textarea></td>
+					<td><div id="buttons"></div></td>				
+				</tr>
+			</tbody>
+		</table>
+		<p><button onclick="generate(0);">Generate</button></p>
+		<p><button onclick="clear_list();">Clear</button></p>
+		<p><input id="toggle" type="checkbox" onchange="toggle_letters();" checked>Letters are visible</input></p>
+		<table class="letters">
+			<tbody id="letters">
+			</tbody>
+		</table>
+		<br>
+		<table class="crossword">
+			<tbody id="crossword">
+			</tbody>
+		</table>
+	</div>
+</body>
