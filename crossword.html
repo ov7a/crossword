@@ -64,6 +64,11 @@
 			visibility: hidden;
 		}
 	</style>
+	<style id="hints_style" type="text/css">
+		.hint span {
+			visibility: visible;
+		}
+	</style>
 	<style media="print" type="text/css" >
 		.controls {
 			display: none;
@@ -85,7 +90,13 @@
 			</table>
 			<p><button onclick="generate(0);">Generate</button></p>
 			<p><button onclick="clear_list();">Clear</button></p>
-			<p><input id="toggle" type="checkbox" onchange="toggle_letters();" checked>Letters are visible</input></p>
+			<p>
+				<select id="toggle" onchange="toggle_letters();">
+					<option selected="selected" value="visible">Letters are visible</option>
+					<option value="hints">Only hints are visible</option>
+					<option value="nothing">No letters are visible</option>
+				</select>	
+ 			</p>
 		</div>
 		<table class="letters">
 			<tbody id="letters">

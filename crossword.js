@@ -31,16 +31,16 @@ function get_words(){
 };
 
 function get_letters(words){
-	var letters = Object(); //should be a Set, but object is backward compatible
+	var letters = Object(); //should be a Map, but object is backward compatible
 	words.forEach(function(word){
 		Array.prototype.forEach.call(word, function(letter){
-			letters[letter] = 1; 
+			letters[letter] = (letters[letter] || 0) + 1; 
 		});
 	});
 	return Object.keys(letters);
 };
 
-function draw_letters(letters){
+function draw_letters(letters, hints){
 	var table = document.getElementById("letters");
 	table.innerHTML = "";
 	var header_row = document.createElement("tr");
@@ -52,6 +52,9 @@ function draw_letters(letters){
 		
 		var letter = document.createElement("td");
 		letter.className = "filled";
+		if (hints.indexOf(letters[i]) != -1){
+			letter.className += " hint";
+		}
 		letter.innerHTML = "<span>" + letters[i] + "</span>";
 		letters_row.appendChild(letter);
 	}
@@ -59,7 +62,7 @@ function draw_letters(letters){
 	table.appendChild(letters_row);
 };
 
-function draw_crossword(net, letters){
+function draw_crossword(net, letters, hints){
 	var table = document.getElementById("crossword");
 	table.innerHTML = "";
 	for (var y = 0; y < net.length; y++){
@@ -70,6 +73,12 @@ function draw_crossword(net, letters){
 				var index = letters.indexOf(net[y][x]) + 1;
 				td.innerHTML = "<sup><small>" + index + "</small></sup> <span>" + net[y][x] + "</span>";
 				td.className = "filled";
+				
+				var index = hints.indexOf(net[y][x])
+				if (index != -1){
+					td.className += " hint";
+					hints.splice(index, 1);
+				}
 			} else {
 				td.className = "empty";
 			}
@@ -317,6 +326,12 @@ function generate_crossword(words){
 	return net;
 };
 
+function get_hints(letters){
+	shuffle(letters);
+	var count = Math.min(2, Math.floor(letters.length / 6));
+	return letters.slice(0, count + 1);
+};
+
 function generate(attempt){
 	var words = get_words();
 	if (words.length == 0 || wordlist.value == placeholder){
@@ -328,21 +343,22 @@ function generate(attempt){
 		return;
 	}
 	var letters = get_letters(words);
+	var hints = get_hints(letters);
 	shuffle(letters);
 	shuffle(words);
 	//wordlist.value = words.join("\n");
-	draw_letters(letters);
+	draw_letters(letters, hints);
 	var net = generate_crossword(words);
 	if (words.length != 0){
 		if (attempt == 100) {
 			alert("Failed to generate crossword after 100 attempts. If words are correct, please retry.");
-			draw_crossword(net, letters);
+			draw_crossword(net, letters, hints);
 			return
 		}
 		generate(attempt + 1);
 		return;
 	}
-	draw_crossword(net, letters);
+	draw_crossword(net, letters, hints);
 	scrollTo(0, document.body.scrollHeight); //scroll down
 };
 
@@ -395,12 +411,23 @@ function clear_list(){
 };
 
 function toggle_letters(){
-	var checked = document.getElementById("toggle").checked;
-	var stylesheet = document.getElementById("letters_style");
-	if (checked){
-		stylesheet.disabled = true;
-	} else {
-		stylesheet.disabled = false;	
+	var value = document.getElementById("toggle").value;
+	var letters_stylesheet = document.getElementById("letters_style");
+	var hints_stylesheet = document.getElementById("hints_style");
+	
+	switch(value) {
+		case "hints":
+			letters_stylesheet.disabled = false;
+			hints_stylesheet.disabled = false;
+			break;
+		case "nothing":
+			letters_stylesheet.disabled = false;
+			hints_stylesheet.disabled = true;
+			break;	
+		default:
+			letters_stylesheet.disabled = true;
+			hints_stylesheet.disabled = false;
+			break;
 	}
 };
 
