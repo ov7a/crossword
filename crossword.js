@@ -313,6 +313,7 @@ function generate_crossword(words){
 			}
 		}
 	}
+	shrink(net);
 	return net;
 };
 
