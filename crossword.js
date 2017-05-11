@@ -319,7 +319,11 @@ function generate_crossword(words){
 function generate(attempt){
 	var words = get_words();
 	if (words.length == 0 || wordlist.value == placeholder){
-		alert("Please, type some words");
+		alert("Please, type in some words");
+		return;
+	}
+	if (words.length == 1){
+		alert("Please, type in at least two words. Crosswords with just one word are boring.");
 		return;
 	}
 	var letters = get_letters(words);
