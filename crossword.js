@@ -398,8 +398,17 @@ function toggle_letters(){
 	}
 };
 
+var placeholder = "Type\nwords\nhere";
+function remove_placeholder(){
+	if (wordlist.value == placeholder){
+		clear_list();
+		wordlist.removeAttribute("onfocus");	
+	}
+};
+
 function onload(){
 	wordlist = document.getElementById("wordlist");
+	wordlist.value = placeholder;
 	numbers.innerHTML = "";
 	words_input();
 	toggle_letters();
