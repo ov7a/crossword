@@ -1,4 +1,5 @@
 var wordlist;
+var placeholder = "Type\nwords\nhere";
 
 function get_lines(){
 	return wordlist.value.split(/\r|\r\n|\n/);
@@ -317,7 +318,7 @@ function generate_crossword(words){
 
 function generate(attempt){
 	var words = get_words();
-	if (words.length == 0){
+	if (words.length == 0 || wordlist.value == placeholder){
 		alert("Please, type some words");
 		return;
 	}
@@ -398,7 +399,6 @@ function toggle_letters(){
 	}
 };
 
-var placeholder = "Type\nwords\nhere";
 function remove_placeholder(){
 	if (wordlist.value == placeholder){
 		clear_list();
