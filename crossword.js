@@ -440,7 +440,9 @@ function remove_placeholder(){
 
 function onload(){
 	wordlist = document.getElementById("wordlist");
-	wordlist.value = placeholder;
+	if (wordlist.value == ""){
+		wordlist.value = placeholder;
+	}
 	numbers.innerHTML = "";
 	words_input();
 	toggle_letters();
