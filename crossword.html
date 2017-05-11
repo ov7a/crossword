@@ -61,27 +61,34 @@
 			visibility: hidden;
 		}
 	</style>
+	<style media="print" type="text/css" >
+		.controls {
+			display: none;
+		}
+	</style>
 	<meta charset="utf-8"/>
 </head>
 <body onload="onload();">
 	<div id="main">
-		<p>Words:</p>
-		<table class="align">
-			<tbody>
-				<tr>
-					<td><ol id="numbers"></ol></td>
-					<td><textarea id="wordlist" rows="1" oninput="words_input();" onfocus="remove_placeholder();"></textarea></td>
-					<td><div id="buttons"></div></td>				
-				</tr>
-			</tbody>
-		</table>
-		<p><button onclick="generate(0);">Generate</button></p>
-		<p><button onclick="clear_list();">Clear</button></p>
-		<p><input id="toggle" type="checkbox" onchange="toggle_letters();" checked>Letters are visible</input></p>
+		<div class="controls">
+			<p>Words:</p>
+			<table class="align">
+				<tbody>
+					<tr>
+						<td><ol id="numbers"></ol></td>
+						<td><textarea id="wordlist" rows="1" oninput="words_input();" onfocus="remove_placeholder();"></textarea></td>
+						<td><div id="buttons"></div></td>				
+					</tr>
+				</tbody>
+			</table>
+			<p><button onclick="generate(0);">Generate</button></p>
+			<p><button onclick="clear_list();">Clear</button></p>
+			<p><input id="toggle" type="checkbox" onchange="toggle_letters();" checked>Letters are visible</input></p>
+		</div>
 		<table class="letters">
 			<tbody id="letters">
 			</tbody>
-		</table>
+		</table>		
 		<br>
 		<table class="crossword">
 			<tbody id="crossword">
